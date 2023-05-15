@@ -5,45 +5,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>再见超星</title>
+    <title>再见超星V1</title>
 </head>
 
 <script src="html5-qrcode.min.js"></script>
 
 <script language="javascript" type="text/javascript">
     function OnButtonClick() {
-        var url = "http://www.baidu.com"; // リクエスト先URL
+        var url = "http://43.142.94.126:18080/";// リクエスト先URL
         const Http = new XMLHttpRequest();
-
-        Http.open("GET", url,true);
-        Http.responseType = 'text';
-        // Http.setRequestHeader("Access-Control-Allow-Origin","*")
-        Http.setRequestHeader('X-Test', 'Test')
-        Http.setRequestHeader('X-Requested-With', 'XMLHttpRequest'); 
-        Http.setRequestHeader('Access-Control-Allow-Origin', 'http://www.baidu.com');
-        Http.send(null);
-        // 4. 当接收到响应后，将调用此函数
-        Http.onload = function () {
-            if (xhr.status != 200) { // 分析响应的 HTTP 状态
-                alert(`Error ${Http.status}: ${Http.statusText}`); // 例如 404: Not Found
-            } else { // 显示结果
-                alert(`Done, got ${Http.response.length} bytes`); // response 是服务器响应
-            }
-        };
-        Http.onprogress = function (event) {
-            if (event.lengthComputable) {
-                alert(`Received ${event.loaded} of ${event.total} bytes`);
-            } else {
-                alert(`Received ${event.loaded} bytes`); // 没有 Content-Length
-            }
-
-        };
-        Http.onerror = function () {
-            alert("Request failed");
-        };
+        Http.open("GET", url);
+        Http.send();
+        Http.onreadystatechange = (e) => {
+            console.log(Http.responseText)
+        }
     }
 </script>
-
 
 
 
@@ -58,6 +35,21 @@
         function onScanSuccess(decodedText, decodedResult) {
             // Handle on success condition with the decoded text or result.
             console.log(`Scan result: ${decodedText}`, decodedResult);
+            const urlParams = new URLSearchParams(decodedText);
+
+            const enc = urlParams.get('enc')
+            console.log(enc);
+            const activeId = urlParams.get('id')
+            console.log(activeId);
+
+            const Http = new XMLHttpRequest();
+
+            var url = "http://43.142.94.126:18080/qrsign?enc="+enc+"activeId="+activeId;
+            Http.open("GET", url);
+            Http.send();
+            Http.onreadystatechange = (e) => {
+                console.log(Http.responseText)
+            }
         }
 
         var html5QrcodeScanner = new Html5QrcodeScanner(
