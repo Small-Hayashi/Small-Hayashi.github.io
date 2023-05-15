@@ -34,7 +34,9 @@
         }
         function onScanSuccess(decodedText, decodedResult) {
             // Handle on success condition with the decoded text or result.
+            console.log(666)
             console.log(`Scan result: ${decodedText}`, decodedResult);
+
             const urlParams = new URLSearchParams(decodedText);
 
             const enc = urlParams.get('enc')
