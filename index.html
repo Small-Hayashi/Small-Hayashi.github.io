@@ -46,7 +46,7 @@
 
             const Http = new XMLHttpRequest();
 
-            var url = "http://43.142.94.126:18080/qrsign?enc="+enc+"activeId="+activeId;
+            var url = "http://43.142.94.126:18080/qrsign?enc=" + enc + "activeId=" + activeId;
             Http.open("GET", url);
             Http.send();
             Http.onreadystatechange = (e) => {
@@ -63,9 +63,11 @@
             "reader", { fps: 10, qrbox: 250 });
 
         function onScanSuccess(decodedText, decodedResult) {
+            console.log(777)
             // Handle on success condition with the decoded text or result.
             console.log(`Scan result: ${decodedText}`, decodedResult);
             // ...
+
             html5QrcodeScanner.clear();
             // ^ this will stop the scanner (video feed) and clear the scan area.
         }
@@ -75,8 +77,27 @@
     </script>
     <script>
         function onScanSuccess(decodedText, decodedResult) {
+            console.log(888)
             // Handle on success condition with the decoded text or result.
             console.log(`Scan result: ${decodedText}`, decodedResult);
+            const urlParams = new URLSearchParams(decodedText);
+
+            const enc = urlParams.get('enc')
+            console.log("enc",enc);
+            console.log(`Scan result: ${decodedText}`, decodedResult);
+            const urlParam = new URLSearchParams(decodedText);
+            const activeId = urlParam.get('c')
+            console.log("activeId",activeId);
+
+            const Http = new XMLHttpRequest();
+
+            var url = "http://43.142.94.126:18080/qrsign?enc=" + enc + "&activeId=" + activeId;
+            Http.open("GET", url);
+            Http.send();
+            Http.onreadystatechange = (e) => {
+                console.log(Http.responseText);
+                alert(Http.responseText);
+            }
         }
 
         function onScanError(errorMessage) {
