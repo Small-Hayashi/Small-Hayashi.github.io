@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QRcode Test</title>
+    <title>再见超星</title>
 </head>
 
 <script src="html5-qrcode.min.js"></script>
 
 <script language="javascript" type="text/javascript">
     function OnButtonClick() {
-        var url = "https://www.baidu.com"; // リクエスト先URL
+        var url = "http://www.baidu.com"; // リクエスト先URL
         const Http = new XMLHttpRequest();
 
-        Http.open("GET", url);
-        Http.responseType = 'json';
-        Http.send();
+        Http.open("GET", url,true);
+        Http.responseType = 'text';
+        // Http.setRequestHeader("Access-Control-Allow-Origin","*")
+        Http.setRequestHeader('X-Test', 'Test')
+        Http.setRequestHeader('X-Requested-With', 'XMLHttpRequest'); 
+        Http.setRequestHeader('Access-Control-Allow-Origin', 'http://www.baidu.com');
+        Http.send(null);
         // 4. 当接收到响应后，将调用此函数
         Http.onload = function () {
             if (xhr.status != 200) { // 分析响应的 HTTP 状态
-                alert(`Error ${xhr.status}: ${xhr.statusText}`); // 例如 404: Not Found
+                alert(`Error ${Http.status}: ${Http.statusText}`); // 例如 404: Not Found
             } else { // 显示结果
-                alert(`Done, got ${xhr.response.length} bytes`); // response 是服务器响应
+                alert(`Done, got ${Http.response.length} bytes`); // response 是服务器响应
             }
         };
         Http.onprogress = function (event) {
