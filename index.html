@@ -9,12 +9,47 @@
 
 <script src="html5-qrcode.min.js"></script>
 
+<script language="javascript" type="text/javascript">
+    function OnButtonClick() {
+        var url = "https://www.baidu.com"; // リクエスト先URL
+        const Http = new XMLHttpRequest();
+
+        Http.open("GET", url);
+        Http.responseType = 'json';
+        Http.send();
+        // 4. 当接收到响应后，将调用此函数
+        Http.onload = function () {
+            if (xhr.status != 200) { // 分析响应的 HTTP 状态
+                alert(`Error ${xhr.status}: ${xhr.statusText}`); // 例如 404: Not Found
+            } else { // 显示结果
+                alert(`Done, got ${xhr.response.length} bytes`); // response 是服务器响应
+            }
+        };
+        Http.onprogress = function (event) {
+            if (event.lengthComputable) {
+                alert(`Received ${event.loaded} of ${event.total} bytes`);
+            } else {
+                alert(`Received ${event.loaded} bytes`); // 没有 Content-Length
+            }
+
+        };
+        Http.onerror = function () {
+            alert("Request failed");
+        };
+    }
+</script>
+
+
 
 
 <body>
     <div style="width: 500px" id="reader"></div>
+    <input id="clickMe" type="button" value="clickme" onclick="OnButtonClick();" />
     <script>
+        function doFunction() {
+            console.log(666)
 
+        }
         function onScanSuccess(decodedText, decodedResult) {
             // Handle on success condition with the decoded text or result.
             console.log(`Scan result: ${decodedText}`, decodedResult);
